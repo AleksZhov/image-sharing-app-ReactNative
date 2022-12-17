@@ -1,9 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, ImageBackground } from "react-native";
-import { LoginScreen, RegistrationScreen } from "./Screens";
+import { LoginScreen, RegistrationScreen } from "./Screens/auth";
 import * as SplashScreen from "expo-splash-screen";
 import { useState, useEffect, useCallback } from "react";
 import * as Font from "expo-font";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+const Stack = createStackNavigator();
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,33 +51,14 @@ export default function App() {
     return null;
   }
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <ImageBackground
-        source={require("./assets/images/photoBg.jpg")}
-        style={styles.image}
-      >
-        {/* <Text style={styles.text}>Open up App.js to start working app!</Text> */}
-        {/* <LoginScreen /> */}
-        <RegistrationScreen />
-        <StatusBar style="auto" />
-      </ImageBackground>
-    </View>
+    // <NavigationContainer onLayout={onLayoutRootView}>
+    //   <Stack.Navigator initialRouteName="Login">
+    //     <Stack.Screen name="Registration" component={RegistrationScreen} />
+    //     <Stack.Screen name="Login" component={LoginScreen} />
+    //   </Stack.Navigator>
+    //   <StatusBar style="auto" />
+    // </NavigationContainer>
+    <RegistrationScreen />
+    // <LoginScreen />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  image: {
-    flex: 1,
-    justifyContent: "flex-end",
-    resizeMode: "cover",
-    height: "100%",
-    width: "100%",
-  },
-});

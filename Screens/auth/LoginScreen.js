@@ -4,6 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import { useState } from "react";
 
@@ -26,6 +27,11 @@ const LoginScreen = () => {
   };
 
   return (
+    // <View style={styles.container}>
+    //   <ImageBackground
+    //     source={require("../../assets/images/photoBg.jpg")}
+    //     style={styles.image}
+    //   >
     <View style={styles.loginFormWrp}>
       <Text style={styles.loginHeader}>Войти</Text>
       <View
@@ -83,12 +89,28 @@ const LoginScreen = () => {
       </TouchableOpacity>
       <Text style={styles.registerText}>Нет аккаунта? Зарегистрироваться</Text>
     </View>
+    //   </ImageBackground>
+    // </View>
   );
 };
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  image: {
+    flex: 1,
+    justifyContent: "flex-end",
+    resizeMode: "cover",
+    height: "100%",
+    width: "100%",
+  },
   loginFormWrp: {
     flex: 0.6,
     borderTopLeftRadius: 25,

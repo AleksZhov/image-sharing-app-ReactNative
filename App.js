@@ -1,17 +1,16 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, ImageBackground } from "react-native";
-import { LoginScreen, RegistrationScreen } from "./Screens/auth";
+import { StyleSheet, View, Text, ImageBackground, Button } from "react-native";
+import useRoute from "./router";
+
 import * as SplashScreen from "expo-splash-screen";
 import { useState, useEffect, useCallback } from "react";
 import * as Font from "expo-font";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 
-const Stack = createStackNavigator();
+import { NavigationContainer } from "@react-navigation/native";
 
 SplashScreen.preventAutoHideAsync();
 
-const loadFonts = async () => {
+const loadFonts = async ({ navigation }) => {
   await Font.loadAsync({
     "Roboto-Regular": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto/Roboto-Bold.ttf"),
@@ -19,6 +18,7 @@ const loadFonts = async () => {
 };
 
 export default function App() {
+  const routing = useRoute(true);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,6 @@ export default function App() {
       } catch (e) {
         console.warn(e);
       } finally {
-        // Tell the application to render
         setIsReady(true);
       }
     }
@@ -38,11 +37,6 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (isReady) {
-      // This tells the splash screen to hide immediately! If we call this after
-      // `setAppIsReady`, then we may see a blank screen while the app is
-      // loading its initial state and rendering its first pixels. So instead,
-      // we hide the splash screen once we know the root view has already
-      // performed layout.
       await SplashScreen.hideAsync();
     }
   }, [isReady]);
@@ -50,15 +44,17 @@ export default function App() {
   if (!isReady) {
     return null;
   }
+
   return (
-    // <NavigationContainer onLayout={onLayoutRootView}>
-    //   <Stack.Navigator initialRouteName="Login">
-    //     <Stack.Screen name="Registration" component={RegistrationScreen} />
-    //     <Stack.Screen name="Login" component={LoginScreen} />
-    //   </Stack.Navigator>
-    //   <StatusBar style="auto" />
-    // </NavigationContainer>
-    <RegistrationScreen />
-    // <LoginScreen />
+    // <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+    //   <Text>
+    //     Hello asdfasdf asdfasdfsdfa sdfasdfsdfsd fasdfasdfas dfasdfasdf
+    //   </Text>
+    // </View>
+    <NavigationContainer onLayout={onLayoutRootView}>
+      {routing}
+
+      <StatusBar style="auto" />
+    </NavigationContainer>
   );
 }

@@ -5,10 +5,14 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { useState } from "react";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pswdVisible, setPswdVisible] = useState(true);
@@ -21,76 +25,87 @@ const LoginScreen = () => {
     console.log(credentials);
     setPassword("");
     setEmail("");
+    navigation.navigate("Home");
   };
   const pswdVisToggle = () => {
     setPswdVisible(!pswdVisible);
   };
 
   return (
-    // <View style={styles.container}>
-    //   <ImageBackground
-    //     source={require("../../assets/images/photoBg.jpg")}
-    //     style={styles.image}
-    //   >
-    <View style={styles.loginFormWrp}>
-      <Text style={styles.loginHeader}>Войти</Text>
-      <View
-        style={{
-          borderWidth: 1,
-          borderRadius: 8,
-          borderColor: `${bordColorEm}`,
-          marginBottom: 16,
-          paddingHorizontal: 16,
-          backgroundColor: "#F6F6F6",
-        }}
+    <View style={styles.container}>
+      <ImageBackground
+        source={require("../../assets/images/photoBg.jpg")}
+        style={styles.image}
       >
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          value={email}
-          placeholder="Адрес электронной почты"
-          onFocus={() => setBordColorEm("#FF6C00")}
-          onBlur={() => setBordColorEm("#E8E8E8")}
-        />
-      </View>
-      <View
-        style={{
-          borderWidth: 1,
-          borderRadius: 8,
-          borderColor: `${bordColorPsw}`,
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.loginFormWrp}>
+            <Text style={styles.loginHeader}>Войти</Text>
 
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          backgroundColor: "#F6F6F6",
+            <View
+              style={{
+                borderWidth: 1,
+                borderRadius: 8,
+                borderColor: `${bordColorEm}`,
+                marginBottom: 16,
+                paddingHorizontal: 16,
+                backgroundColor: "#F6F6F6",
+              }}
+            >
+              <TextInput
+                style={styles.input}
+                onChangeText={setEmail}
+                value={email}
+                placeholder="Адрес электронной почты"
+                onFocus={() => setBordColorEm("#FF6C00")}
+                onBlur={() => setBordColorEm("#E8E8E8")}
+              />
+            </View>
+            <View
+              style={{
+                borderWidth: 1,
+                borderRadius: 8,
+                borderColor: `${bordColorPsw}`,
 
-          paddingHorizontal: 16,
-        }}
-      >
-        <TextInput
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          placeholder="Пароль"
-          secureTextEntry={pswdVisible}
-          onFocus={() => setBordColorPsw("#FF6C00")}
-          onBlur={() => setBordColorPsw("#E8E8E8")}
-        />
-        {password && (
-          <TouchableOpacity onPress={pswdVisToggle}>
-            <Text style={styles.pswdVisBtn}>
-              {pswdVisible ? "Показать" : "Скрыть"}
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
-      <TouchableOpacity style={styles.loginBtn} onPress={onLoginHandle}>
-        <Text style={styles.btnText}>Войти</Text>
-      </TouchableOpacity>
-      <Text style={styles.registerText}>Нет аккаунта? Зарегистрироваться</Text>
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                backgroundColor: "#F6F6F6",
+
+                paddingHorizontal: 16,
+              }}
+            >
+              <TextInput
+                style={styles.input}
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Пароль"
+                secureTextEntry={pswdVisible}
+                onFocus={() => setBordColorPsw("#FF6C00")}
+                onBlur={() => setBordColorPsw("#E8E8E8")}
+              />
+              {password && (
+                <TouchableOpacity onPress={pswdVisToggle}>
+                  <Text style={styles.pswdVisBtn}>
+                    {pswdVisible ? "Показать" : "Скрыть"}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <TouchableOpacity style={styles.loginBtn} onPress={onLoginHandle}>
+              <Text style={styles.btnText}>Войти</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Registration")}
+            >
+              <Text style={styles.registerText}>
+                Нет аккаунта? Зарегистрироваться
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      </ImageBackground>
     </View>
-    //   </ImageBackground>
-    // </View>
   );
 };
 

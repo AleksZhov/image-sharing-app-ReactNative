@@ -9,10 +9,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   useWindowDimensions,
+  ImageBackground,
 } from "react-native";
 import React, { useState } from "react";
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
   const [isReady, setIsReady] = useState(false);
   const [name, setName] = useState("");
@@ -34,97 +35,123 @@ const RegistrationScreen = () => {
     setPswdVisible(!pswdVisible);
   };
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.loginFormWrp}>
-        <View
-          style={{ ...styles.imageCont, marginHorizontal: (width - 152) / 2 }}
-        ></View>
-        <Text style={styles.loginHeader}>Регистрация</Text>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-        >
-          <View
-            style={{
-              borderWidth: 1,
-              borderRadius: 8,
-              borderColor: `${bordColorNm}`,
-              marginBottom: 16,
-              paddingHorizontal: 16,
-              backgroundColor: "#F6F6F6",
-            }}
-          >
-            <TextInput
-              style={styles.input}
-              onChangeText={setName}
-              value={name}
-              placeholder="Логин"
-              onFocus={() => setBordColorNm("#FF6C00")}
-              onBlur={() => setBordColorNm("#E8E8E8")}
-            />
-          </View>
-          <View
-            style={{
-              borderWidth: 1,
-              borderRadius: 8,
-              borderColor: `${bordColorEm}`,
-              marginBottom: 16,
-              paddingHorizontal: 16,
-              backgroundColor: "#F6F6F6",
-            }}
-          >
-            <TextInput
-              style={styles.input}
-              onChangeText={setEmail}
-              value={email}
-              placeholder="Адрес электронной почты"
-              onFocus={() => setBordColorEm("#FF6C00")}
-              onBlur={() => setBordColorEm("#E8E8E8")}
-            />
-          </View>
-          <View
-            style={{
-              borderWidth: 1,
-              borderRadius: 8,
-              borderColor: `${bordColorPsw}`,
+    <View style={styles.container}>
+      <ImageBackground
+        source={require("../../assets/images/photoBg.jpg")}
+        style={styles.image}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.loginFormWrp}>
+            <View
+              style={{
+                ...styles.imageCont,
+                marginHorizontal: (width - 152) / 2,
+              }}
+            ></View>
+            <Text style={styles.loginHeader}>Регистрация</Text>
+            <KeyboardAvoidingView
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
+            >
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  borderColor: `${bordColorNm}`,
+                  marginBottom: 16,
+                  paddingHorizontal: 16,
+                  backgroundColor: "#F6F6F6",
+                }}
+              >
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setName}
+                  value={name}
+                  placeholder="Логин"
+                  onFocus={() => setBordColorNm("#FF6C00")}
+                  onBlur={() => setBordColorNm("#E8E8E8")}
+                />
+              </View>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  borderColor: `${bordColorEm}`,
+                  marginBottom: 16,
+                  paddingHorizontal: 16,
+                  backgroundColor: "#F6F6F6",
+                }}
+              >
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setEmail}
+                  value={email}
+                  placeholder="Адрес электронной почты"
+                  onFocus={() => setBordColorEm("#FF6C00")}
+                  onBlur={() => setBordColorEm("#E8E8E8")}
+                />
+              </View>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  borderColor: `${bordColorPsw}`,
 
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              backgroundColor: "#F6F6F6",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  backgroundColor: "#F6F6F6",
 
-              paddingHorizontal: 16,
-            }}
-          >
-            <TextInput
-              style={styles.input}
-              onChangeText={setPassword}
-              value={password}
-              placeholder="Пароль"
-              secureTextEntry={pswdVisible}
-              onFocus={() => setBordColorPsw("#FF6C00")}
-              onBlur={() => setBordColorPsw("#E8E8E8")}
-            />
-            {password && (
-              <TouchableOpacity onPress={pswdVisToggle}>
-                <Text style={styles.pswdVisBtn}>
-                  {pswdVisible ? "Показать" : "Скрыть"}
-                </Text>
-              </TouchableOpacity>
-            )}
+                  paddingHorizontal: 16,
+                }}
+              >
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setPassword}
+                  value={password}
+                  placeholder="Пароль"
+                  secureTextEntry={pswdVisible}
+                  onFocus={() => setBordColorPsw("#FF6C00")}
+                  onBlur={() => setBordColorPsw("#E8E8E8")}
+                />
+                {password && (
+                  <TouchableOpacity onPress={pswdVisToggle}>
+                    <Text style={styles.pswdVisBtn}>
+                      {pswdVisible ? "Показать" : "Скрыть"}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </KeyboardAvoidingView>
+            <TouchableOpacity style={styles.loginBtn} onPress={onLoginHandle}>
+              <Text style={styles.btnText}>Зарегистрироваться</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={styles.registerText}>Уже есть аккаунт? Войти</Text>
+            </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-        <TouchableOpacity style={styles.loginBtn} onPress={onLoginHandle}>
-          <Text style={styles.btnText}>Зарегистрироваться</Text>
-        </TouchableOpacity>
-        <Text style={styles.registerText}>Уже есть аккаунт? Войти</Text>
-      </View>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </ImageBackground>
+    </View>
   );
 };
 
 export default RegistrationScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  image: {
+    flex: 1,
+    justifyContent: "flex-end",
+    resizeMode: "cover",
+    height: "100%",
+    width: "100%",
+  },
   loginFormWrp: {
     flexShrink: 1,
     borderTopLeftRadius: 25,

@@ -18,7 +18,7 @@ const loadFonts = async ({ navigation }) => {
 };
 
 export default function App() {
-  const routing = useRoute(true);
+  const routing = useRoute();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {

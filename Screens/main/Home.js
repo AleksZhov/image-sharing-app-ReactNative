@@ -9,28 +9,26 @@ const MainTab = createBottomTabNavigator();
 const Home = ({ navigation }) => {
   return (
     <MainTab.Navigator
-      initialRouteName="Публикации"
       screenOptions={{
+        headerTitleAlign: "center",
+        headerLeftContainerStyle: {
+          paddingLeft: 16,
+        },
+        headerRightContainerStyle: {
+          paddingRight: 16,
+        },
         tabBarShowLabel: false,
         tabBarStyle: { paddingLeft: 50, paddingRight: 50, height: 83 },
       }}
     >
       <MainTab.Screen
-        name="Публикации"
+        name="Posts"
         component={PostsScreen}
         options={{
           tabBarIcon: () => <Feather name="grid" size={24} color="#BDBDBD" />,
-          headerTitleAlign: "center",
-          headerLeftContainerStyle: {
-            paddingLeft: 16,
-          },
-          headerRightContainerStyle: {
-            paddingRight: 16,
-          },
-
           headerRight: () => (
             <Entypo
-              onPress={navigation.navigate("Login")}
+              onPress={() => navigation.navigate("Login")}
               name="log-out"
               size={24}
               color="#BDBDBD"
@@ -39,25 +37,12 @@ const Home = ({ navigation }) => {
         }}
       />
       <MainTab.Screen
-        name="Создать публикацию"
+        name="Create"
         component={CreatePostsScreen}
         options={{
-          headerTitleAlign: "center",
-          headerLeftContainerStyle: {
-            paddingLeft: 16,
-          },
-          headerRightContainerStyle: {
-            paddingRight: 16,
-          },
-          headerLeft: () => (
-            <AntDesign
-              onPress={navigation.navigate("Публикации")}
-              name="arrowleft"
-              size={24}
-              color="rgba(33, 33, 33, 0.8)"
-            />
-          ),
+          headerShown: false,
           tabBarIcon: () => <AddBtn />,
+          tabBarStyle: { display: "none" },
         }}
       />
       <MainTab.Screen

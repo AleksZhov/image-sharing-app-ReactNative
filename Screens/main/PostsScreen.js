@@ -1,5 +1,5 @@
 import { Text, Button } from "react-native";
-const PostsScreen = ({ navigation }) => {
+const PostsScreen = ({ navigation, route }) => {
   const onExitBtnPress = () => {
     navigation.navigate("Login");
   };

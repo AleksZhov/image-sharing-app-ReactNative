@@ -1,7 +1,6 @@
 import {
   Text,
   Button,
-  Image,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -12,50 +11,27 @@ import {
   Platform,
 } from "react-native";
 import { Camera } from "expo-camera";
-import * as Location from "expo-location";
 import { useState } from "react";
 
-import {
-  MaterialIcons,
-  Feather,
-  AntDesign,
-  Ionicons,
-} from "@expo/vector-icons";
+import { MaterialIcons, Feather } from "@expo/vector-icons";
 
-const CreatePostsScreen = ({ navigation }) => {
-  const [locatPos, setLocatPos] = useState(null);
+const CreatePost = ({ navigation, route }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [postDescr, setPhotoDescr] = useState("");
   const isReadyToPubl = postDescr && photo;
   const [isShowCamera, setIsShowCamera] = useState(true);
 
-  const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
-    setPhoto(photo.uri);
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-    let location = await Location.getCurrentPositionAsync();
-    let place = await Location.reverseGeocodeAsync({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    });
-    let pos = `${place[0].region}, ${place[0].country}`;
-    setLocatPos(pos);
-  };
-  console.log(locatPos);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={st.cont}>
         {isShowCamera ? (
           <View style={st.camera}>
             {photo && (
-              <Image style={st.photoImg} source={{ uri: photo }}></Image>
+              <Image style={st.photoImg} source={{ uri: photo.uri }}></Image>
             )}
             <TouchableOpacity
+              // onPress={() => navigation.navigate("CreatePostPict")}
               onPress={() => setIsShowCamera(false)}
               style={st.btnCont}
             >
@@ -65,10 +41,7 @@ const CreatePostsScreen = ({ navigation }) => {
         ) : (
           <Camera style={st.camera} ref={setCamera}>
             <TouchableOpacity
-              onPress={() => {
-                takePhoto();
-                setIsShowCamera(true);
-              }}
+              onPress={() => setIsShowCamera(true)}
               style={st.btnCont}
             >
               <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
@@ -88,10 +61,6 @@ const CreatePostsScreen = ({ navigation }) => {
             placeholder="Название"
           />
         </KeyboardAvoidingView>
-        <View>
-          <Ionicons name="location-outline" size={24} color="black" />
-          <Text>{locatPos || "Местность..."}</Text>
-        </View>
         <TouchableOpacity
           style={{
             ...st.publBtn,
@@ -111,7 +80,7 @@ const CreatePostsScreen = ({ navigation }) => {
         <View style={st.clearBtnCont}>
           <TouchableOpacity
             onPress={() => {
-              setPhoto(null), setPhotoDescr(""), setLocatPos(null);
+              setPhoto(null), setPhotoDescr("");
             }}
             style={st.clearBtn}
           >
@@ -122,7 +91,7 @@ const CreatePostsScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-export default CreatePostsScreen;
+export default CreatePost;
 
 const st = StyleSheet.create({
   cont: {
@@ -144,8 +113,8 @@ const st = StyleSheet.create({
   },
   photoImg: {
     flex: 1,
-
-    width: "100%",
+    heigth: 100,
+    width: 100,
   },
   btnCont: {
     position: "absolute",

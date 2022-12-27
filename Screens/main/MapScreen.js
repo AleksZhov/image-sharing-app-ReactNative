@@ -1,8 +1,9 @@
 import { Text, Button } from "react-native";
-const MapScren = ({ navigation }) => {
+import MapView from "react-native-maps";
+const MapScreen = ({ navigation }) => {
   const onExitBtnPress = () => {
     navigation.navigate("LMapScren");
   };
-  return <Text>MapScren</Text>;
+  return <Text>MapScreen</Text>;
 };
-export default MapScren;
+export default MapScreen;

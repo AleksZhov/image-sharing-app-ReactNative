@@ -15,7 +15,7 @@ import {
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
-const useRoute = () => {
+const useRoute = ({navigation}) => {
   return (
     <AuthStack.Navigator initialRouteName="Home">
       <AuthStack.Screen

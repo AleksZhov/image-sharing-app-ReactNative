@@ -1,24 +1,35 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, Text, ImageBackground, Button } from "react-native";
 import useRoute from "./router";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import * as SplashScreen from "expo-splash-screen";
 import { useState, useEffect, useCallback } from "react";
 import * as Font from "expo-font";
 
+import { LoginScreen, RegistrationScreen } from "./Screens/auth";
+import { View, Text } from "react-native";
+
+import {
+  CreatePostsScreen,
+  Home,
+  PostsScreen,
+  ProfileScreen,
+} from "./Screens/main";
+
 import { NavigationContainer } from "@react-navigation/native";
 
 SplashScreen.preventAutoHideAsync();
 
-const loadFonts = async ({ navigation }) => {
+const loadFonts = async () => {
   await Font.loadAsync({
     "Roboto-Regular": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto/Roboto-Bold.ttf"),
+    "Roboto-Medium": require("./assets/fonts/Roboto/Roboto-Medium.ttf"),
   });
 };
+const AuthStack = createStackNavigator();
 
 export default function App() {
-  const routing = useRoute();
+  // const routing = useRoute();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -52,9 +63,25 @@ export default function App() {
     //   </Text>
     // </View>
     <NavigationContainer onLayout={onLayoutRootView}>
-      {routing}
+      <AuthStack.Navigator initialRouteName="Home">
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Registration"
+          component={RegistrationScreen}
+        />
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Home"
+          component={Home}
+        />
+      </AuthStack.Navigator>
 
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
     </NavigationContainer>
   );
 }

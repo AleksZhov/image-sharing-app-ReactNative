@@ -20,13 +20,14 @@ import {
   Feather,
   AntDesign,
   Ionicons,
+  Octicons,
 } from "@expo/vector-icons";
 
 const CreatePostsScreen = ({ navigation }) => {
-  const [locatPos, setLocatPos] = useState(null);
+  const [locatPos, setLocatPos] = useState({});
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
-  const [postDescr, setPhotoDescr] = useState("");
+  const [postDescr, setPostDescr] = useState("");
   const isReadyToPubl = postDescr && photo;
   const [isShowCamera, setIsShowCamera] = useState(true);
 
@@ -38,15 +39,35 @@ const CreatePostsScreen = ({ navigation }) => {
       setErrorMsg("Permission to access location was denied");
       return;
     }
-    let location = await Location.getCurrentPositionAsync();
+    let { coords } = await Location.getCurrentPositionAsync();
     let place = await Location.reverseGeocodeAsync({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: coords.latitude,
+      longitude: coords.longitude,
     });
     let pos = `${place[0].region}, ${place[0].country}`;
-    setLocatPos(pos);
+    let positionData = {
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      region: place[0].region,
+      country: place[0].country,
+    };
+    setLocatPos(positionData);
   };
-  console.log(locatPos);
+
+  const onPublishHandle = () => {
+    if (isReadyToPubl) {
+      navigation.navigate("Posts", {
+        screen: "DefaultPosts",
+        params: {
+          post: { photo, locatPos, postDescr },
+        },
+      });
+    }
+    setPhoto(null);
+    setLocatPos({});
+    setPostDescr(null);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={st.cont}>
@@ -75,23 +96,32 @@ const CreatePostsScreen = ({ navigation }) => {
             </TouchableOpacity>
           </Camera>
         )}
-
+        {/* <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        > */}
         <Text style={st.cameraText}>Загрузите фото</Text>
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-        >
-          <TextInput
-            style={st.postDescr}
-            value={postDescr}
-            onChangeText={setPhotoDescr}
-            placeholder="Название"
-          />
-        </KeyboardAvoidingView>
-        <View>
-          <Ionicons name="location-outline" size={24} color="black" />
-          <Text>{locatPos || "Местность..."}</Text>
+        <TextInput
+          style={st.postDescr}
+          value={postDescr}
+          onChangeText={setPostDescr}
+          placeholder="Название"
+        />
+
+        <View style={st.locatCont}>
+          <Octicons name="location" size={24} color="rgba(189, 189, 189, 1)" />
+          <Text
+            style={{
+              ...st.locatText,
+              color: locatPos.region ? "#212121" : "#BDBDBD",
+            }}
+          >
+            {locatPos.region && locatPos.country
+              ? `${locatPos.region}, ${locatPos.country}`
+              : "Местность..."}
+          </Text>
         </View>
+        {/* </KeyboardAvoidingView> */}
         <TouchableOpacity
           style={{
             ...st.publBtn,
@@ -99,7 +129,7 @@ const CreatePostsScreen = ({ navigation }) => {
           }}
         >
           <Text
-            onPress={() => navigation.navigate("Posts")}
+            onPress={() => onPublishHandle()}
             style={{
               ...st.publBtnText,
               color: isReadyToPubl ? "#fff" : "#BDBDBD",
@@ -111,7 +141,7 @@ const CreatePostsScreen = ({ navigation }) => {
         <View style={st.clearBtnCont}>
           <TouchableOpacity
             onPress={() => {
-              setPhoto(null), setPhotoDescr(""), setLocatPos(null);
+              setPhoto(null), setPostDescr(""), setLocatPos(null);
             }}
             style={st.clearBtn}
           >
@@ -163,9 +193,10 @@ const st = StyleSheet.create({
     fontSize: 16,
   },
   postDescr: {
+    flex: 1,
     borderBottomColor: "#E8E8E8",
     borderBottomWidth: 1,
-    color: "rgba(33, 33, 33, 1)",
+    color: "black",
     marginTop: 45,
     fontFamily: "Roboto-Regular",
     fontSize: 16,
@@ -195,5 +226,18 @@ const st = StyleSheet.create({
     alignItems: "center",
     marginBottom: 32,
     marginTop: 32,
+  },
+  locatCont: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 32,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8E8E8",
+    paddingBottom: 15,
+  },
+  locatText: {
+    marginLeft: 8,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
 });

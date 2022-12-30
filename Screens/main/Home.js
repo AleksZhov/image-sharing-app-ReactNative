@@ -2,7 +2,10 @@ import { Text, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo, Feather, AntDesign } from "@expo/vector-icons";
 import AddBtn from "../../components/AddButton";
-import { CreatePostsScreen, PostsScreen, ProfileScreen } from "./index";
+
+import CreatePostsScreen from "./CreatePostsScreen";
+import PostsScreen from "./PostsScreen";
+import ProfileScreen from "./ProfileScreen";
 
 const MainTab = createBottomTabNavigator();
 
@@ -25,6 +28,7 @@ const Home = ({ navigation }) => {
         name="Posts"
         component={PostsScreen}
         options={{
+          headerShown: false,
           tabBarIcon: () => <Feather name="grid" size={24} color="#BDBDBD" />,
           headerRight: () => (
             <Entypo

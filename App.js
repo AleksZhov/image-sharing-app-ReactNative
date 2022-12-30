@@ -5,15 +5,11 @@ import * as SplashScreen from "expo-splash-screen";
 import { useState, useEffect, useCallback } from "react";
 import * as Font from "expo-font";
 
-import { LoginScreen, RegistrationScreen } from "./Screens/auth";
+import LoginScreen from "./Screens/auth/LoginScreen";
+import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import { View, Text } from "react-native";
 
-import {
-  CreatePostsScreen,
-  Home,
-  PostsScreen,
-  ProfileScreen,
-} from "./Screens/main";
+import Home from "./Screens/main/Home.js";
 
 import { NavigationContainer } from "@react-navigation/native";
 

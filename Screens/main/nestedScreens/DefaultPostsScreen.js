@@ -55,6 +55,8 @@ const DefaultPostsScreen = ({ navigation, route }) => {
       </View>
     );
   };
+
+
   return (
     <View style={st.cont}>
       <View style={st.userCont}>
@@ -82,6 +84,8 @@ const st = StyleSheet.create({
   cont: {
     backgroundColor: "#fff",
     paddingHorizontal: 16,
+    paddingBottom: 32,
+   
   },
   photoCont: {
     backgroundColor: "grey",
@@ -94,7 +98,7 @@ const st = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 32,
-    marginBottom: 11,
+    marginBottom: 32,
   },
   postCont: { marginBottom: 32 },
   postPhoto: { height: 240, width: "100%", borderRadius: 8 },

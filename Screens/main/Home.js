@@ -1,6 +1,6 @@
 import { Text, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Entypo, Feather, AntDesign } from "@expo/vector-icons";
+import {  Feather, AntDesign } from "@expo/vector-icons";
 import AddBtn from "../../components/AddButton";
 
 import CreatePostsScreen from "./CreatePostsScreen";
@@ -10,6 +10,7 @@ import ProfileScreen from "./ProfileScreen";
 const MainTab = createBottomTabNavigator();
 
 const Home = ({ navigation }) => {
+  const navToPosts = ()=>{navigation.navigate("Posts")}
   return (
     <MainTab.Navigator
       screenOptions={{
@@ -30,21 +31,16 @@ const Home = ({ navigation }) => {
         options={{
           headerShown: false,
           tabBarIcon: () => <Feather name="grid" size={24} color="#BDBDBD" />,
-          headerRight: () => (
-            <Entypo
-              onPress={() => navigation.navigate("Login")}
-              name="log-out"
-              size={24}
-              color="#BDBDBD"
-            />
-          ),
+         
         }}
       />
       <MainTab.Screen
         name="Create"
         component={CreatePostsScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: "Создать публикацию",
+          headerLeft:()=><AntDesign onPress={navToPosts} name="arrowleft" size={24} color="black" />,
           tabBarIcon: () => <AddBtn />,
           tabBarStyle: { display: "none" },
         }}

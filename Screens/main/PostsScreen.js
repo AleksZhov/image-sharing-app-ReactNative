@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { Entypo} from "@expo/vector-icons";
+import { Entypo, AntDesign, } from "@expo/vector-icons";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import DefaultPostsScreen from "./nestedScreens/DefaultPostsScreen";
 import CommentsScreen from "./nestedScreens/CommentsScreen";
@@ -7,7 +8,8 @@ import MapScreen from "./nestedScreens/MapScreen";
 
 const PostsStack = createStackNavigator();
 
-const PostsScreen = ({ navigation }) => {
+const PostsScreen = ({ navigation, route }) => {
+  
   return <PostsStack.Navigator initialRouteName="DefaultPosts"
     screenOptions={{
         headerTitleAlign: "center",
@@ -17,7 +19,15 @@ const PostsScreen = ({ navigation }) => {
         headerRightContainerStyle: {
           paddingRight: 16,
       },
-         headerRight: () => (
+       
+      
+      }}>
+    <PostsStack.Screen
+      name="DefaultPosts"
+      component={DefaultPostsScreen}
+      options={{
+        title: "Публикации",
+          headerRight: () => (
             <Entypo
               onPress={() => navigation.navigate("Login")}
               name="log-out"
@@ -25,14 +35,10 @@ const PostsScreen = ({ navigation }) => {
               color="#BDBDBD"
             />
           ),
-      
-      }}>
-    <PostsStack.Screen
-      name="DefaultPosts"
-      component={DefaultPostsScreen}
-      options={{ title: "Публикации"}}
+       
+      }}
     />
-    <PostsStack.Screen name="Comments" component={CommentsScreen} />
+    <PostsStack.Screen name="Comments" component={CommentsScreen} options={{ title:"Комментарии", headerLeft: () => <AntDesign onPress={()=>navigation.navigate("DefaultPosts")} name="arrowleft" size={24} color="black" />,}} />
     <PostsStack.Screen name="Map" component={MapScreen} />
   </PostsStack.Navigator>;
 };

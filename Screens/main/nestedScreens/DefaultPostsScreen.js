@@ -34,7 +34,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Feather
+            <Feather onPress={() => navigation.navigate("Comments", { imgUri:item.photo })}
               name="message-circle"
               size={18}
               color="rgba(189, 189, 189, 1)"
@@ -81,7 +81,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
 export default DefaultPostsScreen;
 
 const st = StyleSheet.create({
-  cont: {
+  cont: {flex:1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
     paddingBottom: 32,

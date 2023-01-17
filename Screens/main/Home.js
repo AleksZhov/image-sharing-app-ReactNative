@@ -1,4 +1,5 @@
 import { Text, Button } from "react-native";
+import { useRoute,getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {  Feather, AntDesign } from "@expo/vector-icons";
 import AddBtn from "../../components/AddButton";
@@ -9,7 +10,11 @@ import ProfileScreen from "./ProfileScreen";
 
 const MainTab = createBottomTabNavigator();
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
+  
+  
+  
+  
   const navToPosts = ()=>{navigation.navigate("Posts")}
   return (
     <MainTab.Navigator
@@ -28,11 +33,20 @@ const Home = ({ navigation }) => {
       <MainTab.Screen
         name="Posts"
         component={PostsScreen}
-        options={{
+        options={({ route }) => ({
           headerShown: false,
-          tabBarIcon: () => <Feather name="grid" size={24} color="#BDBDBD" />,
-         
-        }}
+                    tabBarIcon: () => (
+                        <Feather name="grid" size={24} color={"#BDBDBD"} />
+                    ),
+                    tabBarStyle: ((route) => {
+                        const routeName =
+                            getFocusedRouteNameFromRoute(route) ?? "";
+                        if (routeName === "Comments") {
+                            return { display: "none" };
+                        }
+                        return { height: 83 };
+                    })(route),
+                })}
       />
       <MainTab.Screen
         name="Create"

@@ -44,7 +44,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
           </View>
           <View style={{ flexDirection: "row" }}>
             <Octicons
-              onPress={()=>navigation.navigate("Map",{locat:{latitude:item.locatPos.latitude,longitude:item.locatPos.longitude}})} 
+              onPress={()=>navigation.navigate("Map",{locat:{latitude:item.locatPos.latitude,longitude:item.locatPos.longitude},photoTitle:item.postDescr})} 
               name="location"
               size={18}
               color="rgba(189, 189, 189, 1)"

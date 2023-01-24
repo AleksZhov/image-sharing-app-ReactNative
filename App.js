@@ -1,5 +1,7 @@
 import useRoute from "./router";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Provider } from "react-redux";
+import { store } from "./redux/store"
 
 import * as SplashScreen from "expo-splash-screen";
 import { useState, useEffect, useCallback } from "react";
@@ -57,8 +59,8 @@ export default function App() {
     //   <Text>
     //     Hello asdfasdf asdfasdfsdfa sdfasdfsdfsd fasdfasdfas dfasdfasdf
     //   </Text>
-    // </View>
-    <NavigationContainer onLayout={onLayoutRootView}>
+    //  </View>
+   <Provider store={store}><NavigationContainer onLayout={onLayoutRootView}>
       <AuthStack.Navigator initialRouteName="Home">
         <AuthStack.Screen
           options={{ headerShown: false }}
@@ -78,6 +80,6 @@ export default function App() {
       </AuthStack.Navigator>
 
       {/* <StatusBar style="auto" /> */}
-    </NavigationContainer>
+    </NavigationContainer></Provider>
   );
 }

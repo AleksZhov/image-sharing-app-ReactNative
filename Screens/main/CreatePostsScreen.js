@@ -141,7 +141,7 @@ const CreatePostsScreen = ({ navigation }) => {
         <View style={st.clearBtnCont}>
           <TouchableOpacity
             onPress={() => {
-              setPhoto(null), setPostDescr(""), setLocatPos(null);
+              setPhoto(null), setPostDescr(""), setLocatPos({});
             }}
             style={st.clearBtn}
           >

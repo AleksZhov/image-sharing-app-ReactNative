@@ -1,26 +1,13 @@
 import { View ,StyleSheet,Dimensions, TouchableOpacity, Text} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { Feather, AntDesign } from "@expo/vector-icons";
-import { useState, useEffect } from "react";
 
 const MapScreen = ({ navigation, route }) => {
 
-  const { latitude, longitude } = route.params.locat;
-  console.log(latitude, longitude);
-  // const [latitude, setLatitude] = useState(null);
-  // const [longitude, setLongitude] = useState(null);
-  // useEffect(() => {
-  //   if (route.params?.locat) {
-  //     setLatitude(route.params.locat.latitude);
-  //     setLongitude(route.params.locat.longitude);
-  //   }
-   
-  // }, [route.params]);
-
-
-
+  const {photoTitle, locat:{ latitude, longitude }} = route.params;
+ 
   return <View styles={st.cont}>
-    <TouchableOpacity style={st.backBtn} onPress={navigation.navigate("DefaultPosts")}><AntDesign  name="arrowleft" size={24} color="black" /></TouchableOpacity>
+    <TouchableOpacity style={st.backBtn} onPress={()=>navigation.navigate("DefaultPosts")}><AntDesign  name="arrowleft" size={24} color="black" /></TouchableOpacity>
     <MapView
         style={st.mapStyle}
         region={{
@@ -31,21 +18,15 @@ const MapScreen = ({ navigation, route }) => {
         }}
         mapType="standard"
         minZoomLevel = {15}
-        // onMapReady={() => console.log("Map is ready")}
-        // onRegionChange={() => console.log("Region change")}
+       
       >
         <Marker
-          title="I am here"
+          title={photoTitle}
           coordinate={{ latitude, longitude}}
           description='Hello'
         />
       </MapView></View>;
-  //  return <View style ={{flex:1, alignItems:"center", justifyContent:"center"}}><Text>Map View</Text>
-  // <Text>Map View</Text>
-  // <Text>Map View</Text>
-  // <Text>Map View</Text>
-  // <Text>Map View</Text>
-  // <Text>Map View</Text></View>
+ 
 };
 
 

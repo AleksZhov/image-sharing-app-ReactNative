@@ -6,12 +6,15 @@ import {
   Ionicons,
   Octicons,
 } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
 import { Text, View, FlatList, Image, StyleSheet } from "react-native";
 
 const DefaultPostsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState(null);
+  const { name, email } = useSelector(state => state.auth)
+
   useEffect(() => {
     if (route.params?.post) {
       setPosts((prevState) => [...prevState, route.params.post]);
@@ -67,8 +70,8 @@ const DefaultPostsScreen = ({ navigation, route }) => {
         </View>
 
         <View>
-          <Text>Natali Romanova</Text>
-          <Text>email@example.com</Text>
+          <Text>{name}</Text>
+          <Text>{email}</Text>
         </View>
       </View>
 

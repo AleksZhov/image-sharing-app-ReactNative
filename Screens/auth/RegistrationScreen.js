@@ -12,8 +12,12 @@ import {
   ImageBackground,
 } from "react-native";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import {authSignUp} from "../../redux/auth/authOperations"
 
 const RegistrationScreen = ({ navigation }) => {
+  const dispath = useDispatch();
+
   const { width } = useWindowDimensions();
   const [isReady, setIsReady] = useState(false);
   const [name, setName] = useState("");
@@ -27,7 +31,7 @@ const RegistrationScreen = ({ navigation }) => {
   const credentials = { name, email, password };
 
   const onLoginHandle = () => {
-    console.log(credentials);
+    dispath(authSignUp({name,email,password}))
     setName(""), setPassword("");
     setEmail("");
   };

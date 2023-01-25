@@ -11,8 +11,12 @@ import {
   Platform,
 } from "react-native";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {authSignIn} from "../../redux/auth/authOperations"
+
 
 const LoginScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pswdVisible, setPswdVisible] = useState(true);
@@ -22,10 +26,10 @@ const LoginScreen = ({ navigation }) => {
   const credentials = { email, password };
 
   const onLoginHandle = () => {
-    console.log(credentials);
+    dispatch(authSignIn(credentials));
     setPassword("");
     setEmail("");
-    navigation.navigate("Home");
+    
   };
   const pswdVisToggle = () => {
     setPswdVisible(!pswdVisible);

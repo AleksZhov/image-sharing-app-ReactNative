@@ -6,14 +6,14 @@ import { NavigationContainer } from "@react-navigation/native";
 // SplashScreen.preventAutoHideAsync();
 
 import useRoute from "../router";
-import db from "../firebase/config"
+import { auth } from "../firebase/config"
 import { authStateChangeUser } from "../redux/auth/authOperations";
 
 const Main = () => {
     const [user, setUser] = useState(null);
   
 
-db.auth().onAuthStateChanged((user) => setUser(user))
+// db.auth().onAuthStateChanged((user) => setUser(user))
 
     
     const {stateChange} = useSelector(state => state.auth)

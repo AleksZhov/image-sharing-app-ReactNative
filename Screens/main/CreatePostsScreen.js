@@ -23,7 +23,8 @@ import {
   Octicons,
 } from "@expo/vector-icons";
 // import { deltaBundle } from "metro-bundler/src/DeltaBundler/Serializers";
-import db from "../../firebase/storage";
+import { storage } from "../../firebase/config";
+import { getStorage, ref } from "firebase/storage";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [locatPos, setLocatPos] = useState({});
@@ -35,6 +36,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
+    
     setPhoto(photo.uri);
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -58,9 +60,12 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
+    console.log('response: ', response);
+
     const file = await response.blob();
-    const uniquePostId = Date.now().toString();
-    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file)
+    console.log('file: ', file);
+    
+    const data = await ref(storage, file)
     console.log('data: ', data);
   }
 

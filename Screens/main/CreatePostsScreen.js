@@ -22,6 +22,8 @@ import {
   Ionicons,
   Octicons,
 } from "@expo/vector-icons";
+// import { deltaBundle } from "metro-bundler/src/DeltaBundler/Serializers";
+import db from "../../firebase/storage";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [locatPos, setLocatPos] = useState({});
@@ -54,7 +56,17 @@ const CreatePostsScreen = ({ navigation }) => {
     setLocatPos(positionData);
   };
 
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file)
+    console.log('data: ', data);
+  }
+
   const onPublishHandle = () => {
+    uploadPhotoToServer();
+    
     if (isReadyToPubl) {
       navigation.navigate("Posts", {
         screen: "DefaultPosts",

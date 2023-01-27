@@ -1,6 +1,6 @@
 import * as firebase from "firebase";
-import "firebase/auth";
-import "firebase/firestore";
+// import "firebase/auth";
+// import "firebase/firestore";
 import "firebase/storage"
 
 const firebaseConfig = {
@@ -13,8 +13,5 @@ const firebaseConfig = {
   measurementId: "G-8285ZLNQTX"
 };
 
-// export default firebase.initializeApp(firebaseConfig);
-export default !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
-
-
-
+export default firebase.initializeApp(firebaseConfig);
+// export default !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();

@@ -14,6 +14,7 @@ import {
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import {
   MaterialIcons,
@@ -24,7 +25,7 @@ import {
 } from "@expo/vector-icons";
 // import { deltaBundle } from "metro-bundler/src/DeltaBundler/Serializers";
 import { storage } from "../../firebase/config";
-import { getStorage, ref } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [locatPos, setLocatPos] = useState({});
@@ -33,6 +34,8 @@ const CreatePostsScreen = ({ navigation }) => {
   const [postDescr, setPostDescr] = useState("");
   const isReadyToPubl = postDescr && photo;
   const [isShowCamera, setIsShowCamera] = useState(true);
+
+  const {userId} = useSelector((state)=>state.auth)
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
@@ -60,13 +63,15 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
-    console.log('response: ', response);
-
     const file = await response.blob();
-    console.log('file: ', file);
+    // const storageRef = ref(storage);
+
+    const fileRef = ref(storage, `posts/${userId}/${Date.now()}.jpg`);
+    console.log('fileRef: ', fileRef);
     
-    const data = await ref(storage, file)
-    console.log('data: ', data);
+    const bytes = await uploadBytes(fileRef, file)
+    console.log('bytes: ', bytes);
+    
   }
 
   const onPublishHandle = () => {

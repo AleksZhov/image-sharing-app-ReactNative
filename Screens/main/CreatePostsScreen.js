@@ -23,9 +23,10 @@ import {
   Ionicons,
   Octicons,
 } from "@expo/vector-icons";
-// import { deltaBundle } from "metro-bundler/src/DeltaBundler/Serializers";
-import { storage } from "../../firebase/config";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+
+import { uploadPhoto } from "../../firebase/storageUse";
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "../../firebase/config";
 
 const CreatePostsScreen = ({ navigation }) => {
   const [locatPos, setLocatPos] = useState({});
@@ -35,7 +36,7 @@ const CreatePostsScreen = ({ navigation }) => {
   const isReadyToPubl = postDescr && photo;
   const [isShowCamera, setIsShowCamera] = useState(true);
 
-  const {userId} = useSelector((state)=>state.auth)
+  const {userId, name} = useSelector((state)=>state.auth)
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
@@ -61,28 +62,18 @@ const CreatePostsScreen = ({ navigation }) => {
     setLocatPos(positionData);
   };
 
-  const uploadPhotoToServer = async () => {
-    const response = await fetch(photo);
-    const file = await response.blob();
-    // const storageRef = ref(storage);
+  const onPublishHandle = async() => {
+    const downloadURl = await uploadPhoto(photo, userId);
+    const docRef = await addDoc(collection(db, "posts"), {
+      downloadURl, postDescription: postDescr,
+      location: locatPos, userId, name
+    })
 
-    const fileRef = ref(storage, `posts/${userId}/${Date.now()}.jpg`);
-    console.log('fileRef: ', fileRef);
-    
-    const bytes = await uploadBytes(fileRef, file)
-    console.log('bytes: ', bytes);
-    
-  }
-
-  const onPublishHandle = () => {
-    uploadPhotoToServer();
     
     if (isReadyToPubl) {
       navigation.navigate("Posts", {
         screen: "DefaultPosts",
-        params: {
-          post: { photo, locatPos, postDescr },
-        },
+       
       });
     }
     setPhoto(null);

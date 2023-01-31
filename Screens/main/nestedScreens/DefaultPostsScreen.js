@@ -10,26 +10,33 @@ import { useSelector } from "react-redux";
 
 import { Text, View, FlatList, Image, StyleSheet } from "react-native";
 
+import { db } from "../../../firebase/config";
+import { collection, getDocs } from "firebase/firestore";
+
+
 const DefaultPostsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState(null);
   const { name, email } = useSelector(state => state.auth)
 
+  const getAllPosts = async () => {
+    
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    querySnapshot.forEach((doc) => {
+ setPosts((prevState)=>([...prevState,{...doc.data(),docId:doc.id}]))  
+});
+  }
+
   useEffect(() => {
-    if (route.params?.post) {
-      setPosts((prevState) => [...prevState, route.params.post]);
-    }
-    if (route.params?.user) {
-      setUser(route.params.user);
-    }
-  }, [route.params]);
+    getAllPosts();
+  
+  }, []);
 
   const renderPosts = ({ item }) => {
     
     return (
       <View style={st.postCont}>
-        <Image style={st.postPhoto} source={{ uri: item.photo }} />
-        <Text style={st.postDescr}>{item.postDescr}</Text>
+        <Image style={st.postPhoto} source={{ uri: item.downloadURl }} />
+        <Text style={st.postDescr}>{item.postDescription}</Text>
         <View
           style={{
             flexDirection: "row",
@@ -38,7 +45,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Feather onPress={() => navigation.navigate("Comments", { imgUri:item.photo })}
+            <Feather onPress={() => navigation.navigate("Comments", { imgUri:item.downloadURl })}
               name="message-circle"
               size={18}
               color="rgba(189, 189, 189, 1)"
@@ -47,14 +54,14 @@ const DefaultPostsScreen = ({ navigation, route }) => {
           </View>
           <View style={{ flexDirection: "row" }}>
             <Octicons
-              onPress={()=>navigation.navigate("Map",{locat:{latitude:item.locatPos.latitude,longitude:item.locatPos.longitude},photoTitle:item.postDescr})} 
+              onPress={()=>navigation.navigate("Map",{locat:{latitude:item.location.latitude,longitude:item.location.longitude},photoTitle:item.postDescription})} 
               name="location"
               size={18}
               color="rgba(189, 189, 189, 1)"
             />
             <Text
               style={st.locText}
-            >{`${item.locatPos.region}, ${item.locatPos.country}`}</Text>
+            >{`${item.location.region}, ${item.location.country}`}</Text>
           </View>
         </View>
       </View>
@@ -66,7 +73,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
     <View style={st.cont}>
       <View style={st.userCont}>
         <View style={st.photoCont}>
-          {user?.photo && <Image source={{ uri: user.photo }}></Image>}
+          {/* {user?.photo && <Image source={{ uri: user.photo }}></Image>} */}
         </View>
 
         <View>

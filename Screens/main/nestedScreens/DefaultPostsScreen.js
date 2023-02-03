@@ -32,6 +32,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
   }, []);
 
   const renderPosts = ({ item }) => {
+    const commentsArrLength = item.comments ? item.comments.length : 0;
     
     return (
       <View style={st.postCont}>
@@ -45,12 +46,12 @@ const DefaultPostsScreen = ({ navigation, route }) => {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Feather onPress={() => navigation.navigate("Comments", { imgUri:item.downloadURl })}
+            <Feather onPress={() => navigation.navigate("Comments", { imgUri:item.downloadURl, postId:item.docId })}
               name="message-circle"
               size={18}
               color="rgba(189, 189, 189, 1)"
             />
-            <Text style={st.commNumber}>0</Text>
+            <Text style={st.commNumber}>{commentsArrLength}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
             <Octicons

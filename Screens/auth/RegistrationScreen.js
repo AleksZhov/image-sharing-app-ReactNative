@@ -10,8 +10,11 @@ import {
   Platform,
   useWindowDimensions,
   ImageBackground,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
+import { AntDesign, MaterialIcons } from '@expo/vector-icons'; 
+import { Camera } from "expo-camera";
 import { useDispatch } from "react-redux";
 import {authSignUp} from "../../redux/auth/authOperations"
 
@@ -27,13 +30,24 @@ const RegistrationScreen = ({ navigation }) => {
   const [bordColorNm, setBordColorNm] = useState("#E8E8E8");
   const [bordColorEm, setBordColorEm] = useState("#E8E8E8");
   const [bordColorPsw, setBordColorPsw] = useState("#E8E8E8");
+  const [camera, setCamera] = useState(null);
+  const [photo, setPhoto] = useState(null);
+  const [isShowCamera, setIsShowCamera] = useState(false);
+
+  const takeAvatarPhoto = async () => {
+    const photoShot = await camera.takePictureAsync();
+    setPhoto(photoShot.uri);
+    
+    
+  }
+
 
   const credentials = { name, email, password };
 
   const onLoginHandle = () => {
-    dispath(authSignUp({name,email,password}))
+    dispath(authSignUp({name,email,password,photo}))
     setName(""), setPassword("");
-    setEmail("");
+    setEmail("");setPhoto(null)
   };
   const pswdVisToggle = () => {
     setPswdVisible(!pswdVisible);
@@ -51,7 +65,22 @@ const RegistrationScreen = ({ navigation }) => {
                 ...styles.imageCont,
                 marginHorizontal: (width - 152) / 2,
               }}
-            ></View>
+            >
+              {isShowCamera? <Camera style={styles.camera} ref={setCamera}>
+            <TouchableOpacity
+              onPress={() => {
+                takeAvatarPhoto();
+                setIsShowCamera(false);
+              }}
+              style={styles.btnCont}
+            >
+              <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </Camera>: <Image style={{width:"100%", height:"100%",borderRadius:16}} source={{uri:photo}}></Image>}
+              
+              {!isShowCamera && photo === null && <TouchableOpacity onPress={() => setIsShowCamera(true)} style={styles.addPhotoBtn}><AntDesign name="pluscircleo" size={24} color="#FF6C00" /></TouchableOpacity>}
+              {photo&&<TouchableOpacity onPress={() => setPhoto(null)} style={styles.addPhotoBtn}><AntDesign name="closecircleo" size={24} color="#e8e8e8" /></TouchableOpacity>}
+            </View>
             <Text style={styles.loginHeader}>Регистрация</Text>
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -205,4 +234,6 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   pswdVisBtn: { color: "#1B4371" },
+  addPhotoBtn: { backgroundColor: "white", justifyContent: "center", alignItems: "center", position: "absolute", right: -12, bottom: 14, borderRadius:13},
+  camera: { width: "100%", height: "100%", justifyContent:"center",alignItems:"center",borderRadius:16}
 });

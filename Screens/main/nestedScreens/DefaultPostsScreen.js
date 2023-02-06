@@ -16,7 +16,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 const DefaultPostsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
-  const { name, email } = useSelector(state => state.auth)
+  const { name, email, avatURL } = useSelector(state => state.auth)
 
   const getAllPosts = async () => {
     
@@ -74,7 +74,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
     <View style={st.cont}>
       <View style={st.userCont}>
         <View style={st.photoCont}>
-          {/* {user?.photo && <Image source={{ uri: user.photo }}></Image>} */}
+          {avatURL && <Image style = {{width:"100%", height:"100%",borderRadius:8}} source={{ uri: avatURL }}></Image>}
         </View>
 
         <View>

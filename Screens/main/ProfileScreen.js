@@ -9,10 +9,13 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  Image,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { Entypo, AntDesign, } from "@expo/vector-icons";
 
 const ProfileScreen = ({ navigation }) => {
+  const { name, avatURL } = useSelector((state) => state.auth);
 
  
   return <View style ={st.cont}><ImageBackground
@@ -21,6 +24,7 @@ const ProfileScreen = ({ navigation }) => {
   >
     <View style={st.profileCont}>
       <View style={st.avatCont}>
+       {avatURL&& <Image source={{ uri: avatURL }} style={{width:"100%", height:"100%",borderRadius:16}}></Image>}
         <TouchableOpacity style={st.remAvatBtn}><AntDesign name="close" size={15} color="#bdbdbd" /></TouchableOpacity>
       </View>
       <TouchableOpacity style={st.exitBtnCont}><Entypo
@@ -30,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
               color="#BDBDBD"
             /></TouchableOpacity>
        
-      <Text style = {st.profileName}> Natali Romanova</Text>
+      <Text style={st.profileName}>{name}</Text>
     </View>
   </ImageBackground></View>;
 };

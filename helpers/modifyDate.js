@@ -31,7 +31,7 @@
             break;
     }
      const minutes = date.getMinutes().toString();
-     console.log(minutes.length)
+    
      const minutesStr = minutes.length === 1 ? `0${minutes}`:`${ minutes }`;
     return `${date.getDate()} ${monthStr}, ${date.getFullYear()} | ${date.getHours()}:${minutesStr}`
 }

@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { Text, View, FlatList, Image, StyleSheet } from "react-native";
 
 import { db } from "../../../firebase/config";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
 
 const DefaultPostsScreen = ({ navigation, route }) => {
@@ -20,10 +20,13 @@ const DefaultPostsScreen = ({ navigation, route }) => {
 
   const getAllPosts = async () => {
     
-    const querySnapshot = await getDocs(collection(db, "posts"));
-    querySnapshot.forEach((doc) => {
- setPosts((prevState)=>([...prevState,{...doc.data(),docId:doc.id}]))  
-});
+    await onSnapshot(collection(db, "posts"), (querySnapshot) => {
+      setPosts([]);
+      querySnapshot.forEach((doc) => 
+        setPosts((prevState) => ([...prevState, { ...doc.data(), docId: doc.id }]))
+      )
+    }
+    )
   }
 
   useEffect(() => {

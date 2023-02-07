@@ -36,9 +36,7 @@ const RegistrationScreen = ({ navigation }) => {
 
   const takeAvatarPhoto = async () => {
     const photoShot = await camera.takePictureAsync();
-    setPhoto(photoShot.uri);
-    
-    
+    setPhoto(photoShot.uri); 
   }
 
 

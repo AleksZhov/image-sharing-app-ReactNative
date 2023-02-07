@@ -8,7 +8,8 @@ const initialState = { userId: null, name: null,email:null, stateChange:false, a
      reducers: {
          updateUserProfile: (state, { payload }) => ({ ...state, userId: payload.userId, name:payload.name, email:payload.userEmail, avatURL:payload.avatURL}),
          authSetChange: (state, { payload }) => ({ ...state, stateChange: payload.stateChange }),
-     authLogOut:()=> initialState } 
+         authLogOut: () => initialState,
+     changeAvatarPhoto:(state,{payload})=>({...state, avatURL:payload.avatURL})} 
     
 })
 

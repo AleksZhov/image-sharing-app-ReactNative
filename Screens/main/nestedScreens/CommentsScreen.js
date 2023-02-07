@@ -4,14 +4,14 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import { modifyDate } from "../../../helpers/modifyDate";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc,onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 import { useSelector } from "react-redux";
 import { FlatList } from "react-native-gesture-handler";
 
 
 const CommentsScreen = ({ navigation, route }) => {
-  const { userId } = useSelector(state => state.auth);
+  const { userId, avatURL } = useSelector(state => state.auth);
 
   const [photoUri, setPhotoUri] = useState(null);
   const [commentInpValue, setCommentInpValue] = useState(null);
@@ -20,9 +20,9 @@ const CommentsScreen = ({ navigation, route }) => {
   const { postId } = route.params;
 
   const getPostData = async () => {
-    const querySnapshot = await getDoc(doc(db, "posts", postId))
-    const postData = await querySnapshot.data();
-    setCommentsArr(postData.comments || []);
+    await onSnapshot(doc(db, "posts", postId),(doc)=>setCommentsArr(doc.data().comments || []))
+   
+    
     
 
   }
@@ -40,7 +40,7 @@ const CommentsScreen = ({ navigation, route }) => {
   const toMakePost = () => {
     const commentDate = new Date;
     const reqDate = modifyDate(commentDate)
-    const comment = { text:commentInpValue, date: reqDate, userId };
+    const comment = { text:commentInpValue, date: reqDate, userId, avatURL };
     // const comments = commentsArr.length > 1 ? [...commentsArr, comment] : [comment]
     setDoc(doc(db, "posts", postId), { comments:[...commentsArr, comment]},{merge:true})
   
@@ -48,10 +48,11 @@ const CommentsScreen = ({ navigation, route }) => {
   }
 
   const renderComments = ({ item }) => {
+
     return (
      
         <View style={st.commentCont}>
-      <View style={st.commentAvtr}></View>
+        <View style={st.commentAvtr}><Image style={{ width: "100%", height: "100%", borderRadius: 14}} resizeMode="cover" source ={{uri: item.avatURL}}></Image></View>
       <View style={st.commentTextCont}>
             <Text style={st.commentText}>{item.text}</Text>
             <Text style={st.commentTime}>{item.date}</Text>

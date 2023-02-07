@@ -4,7 +4,7 @@ import { authSlice } from "./authReducer";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "firebase/auth";
 import { uploadPhoto } from "../../firebase/storageUse";
 
-const {updateUserProfile, authLogOut,authSetChange} = authSlice.actions
+const {updateUserProfile, authLogOut,authSetChange, changeAvatarPhoto} = authSlice.actions
 
 
 export const authSignUp = ({ email, password, name, photo }) => async (dispatch, getState) => { 
@@ -59,6 +59,21 @@ export const authStateChangeUser = () => async (dispatch, getState) => {
             dispatch(authSetChange({ stateChange: true }));
 }
     })
+}
+export const changeAvatarPhotoURL =(photoDir) => async (dispatch, getState) => {
+    try {
+        const user = auth.currentUser;
+        // if (avatarURL !== null) { const avatarURL = await uploadPhoto(avatarURL, user.uid) }
+        const avURL = photoDir? await uploadPhoto(photoDir, user.uid):null
+    await updateProfile(user, { photoURL: avURL });
+       await dispatch(changeAvatarPhoto({ avatURL: avURL }))
+       console.log(auth.currentUser)
+   } catch (error) {
+       console.log(error);
+    
+   }
+    
+    
 }
 
 

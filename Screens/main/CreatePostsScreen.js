@@ -68,7 +68,7 @@ const CreatePostsScreen = ({ navigation }) => {
     const downloadURl = await uploadPhoto(photo, userId);
     const docRef = await addDoc(collection(db, "posts"), {
       downloadURl, postDescription: postDescr,
-      location: locatPos, userId, name
+      location: locatPos, userId, name, likes:[]
     })
 
     

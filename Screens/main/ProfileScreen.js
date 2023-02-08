@@ -62,8 +62,7 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   const renderUserPosts = ({ item }) => {
-     const commentsArrLength = item.comments ? item.comments.length : 0;
-     
+   
     return (<View style={st.postCont}>
       <Image style={st.postPhoto} source={{ uri: item.downloadURl }} />
       <Text style={st.postDescr}>{item.postDescription}</Text>
@@ -80,9 +79,9 @@ const ProfileScreen = ({ navigation }) => {
             size={18}
             color="#FF6C00"
           />
-          <Text style={st.commNumber}>{commentsArrLength}</Text>
+          <Text style={st.commNumber}>{item.comments?.length || 0}</Text>
           <Feather name="thumbs-up" size={18} color="#FF6C00" />
-          <Text style={st.commNumber}>{commentsArrLength}</Text>
+          <Text style={st.commNumber}>{item.likes?.length|| 0}</Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <Octicons

@@ -8,15 +8,15 @@ import {
 } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
-import { Text, View, FlatList, Image, StyleSheet } from "react-native";
+import { Text, View, FlatList, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 import { db } from "../../../firebase/config";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, getDocs,setDoc,doc, onSnapshot } from "firebase/firestore";
 
 
 const DefaultPostsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
-  const { name, email, avatURL } = useSelector(state => state.auth)
+  const { name, email, avatURL, userId } = useSelector(state => state.auth)
 
   const getAllPosts = async () => {
     
@@ -34,8 +34,22 @@ const DefaultPostsScreen = ({ navigation, route }) => {
   
   }, []);
 
+
+
+
   const renderPosts = ({ item }) => {
-    const commentsArrLength = item.comments ? item.comments.length : 0;
+
+    const addLike = async (postId) => {
+      const currArr = item.likes ? item.likes : [];
+    const likesArr = [...currArr, userId ]
+    setDoc(doc(db,"posts", item.docId), {likes:likesArr},{merge:true})
+    }
+    
+    const removeLike = async (postId) => {
+      const likesArr = item.likes.filter(value => value !== userId);
+      setDoc(doc(db,"posts", item.docId), {likes:likesArr},{merge:true})
+}
+    
     
     return (
       <View style={st.postCont}>
@@ -48,17 +62,29 @@ const DefaultPostsScreen = ({ navigation, route }) => {
             marginBottom: 11,
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Feather onPress={() => navigation.navigate("Comments", { imgUri:item.downloadURl, postId:item.docId })}
+          <View onPress={() => navigation.navigate("Comments", { imgUri: item.downloadURl, postId: item.docId })}
+            style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Feather 
               name="message-circle"
               size={18}
               color="rgba(189, 189, 189, 1)"
             />
-            <Text style={st.commNumber}>{commentsArrLength}</Text>
+              <Text style={st.commNumber}>{item.comments?.length || 0}</Text></View>
+            <View style={{ marginLeft: 15 }}>
+              {item.likes?.some(value => value === userId) || false ? <Ionicons
+                onPress={()=> removeLike(item.docId)}
+                name="thumbs-up" size={20} color="#FF6C00" /> : <Ionicons
+                onPress={()=> addLike(item.docId)}
+                name="thumbs-up-outline" size={18} color="rgba(189, 189, 189, 1)" />}
+             </View>
+          
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            onPress={()=>navigation.navigate("Map",{locat:{latitude:item.location.latitude,longitude:item.location.longitude},photoTitle:item.postDescription})} 
+            style={{ flexDirection: "row" }}>
             <Octicons
-              onPress={()=>navigation.navigate("Map",{locat:{latitude:item.location.latitude,longitude:item.location.longitude},photoTitle:item.postDescription})} 
+              
               name="location"
               size={18}
               color="rgba(189, 189, 189, 1)"
@@ -66,7 +92,7 @@ const DefaultPostsScreen = ({ navigation, route }) => {
             <Text
               style={st.locText}
             >{`${item.location.region}, ${item.location.country}`}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     );

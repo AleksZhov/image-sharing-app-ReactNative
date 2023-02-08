@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "myNewProject",
-    "slug": "myNewProject",
+    "slug": "pictureshare",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "482a0854-138a-4622-a22b-1e39bf49e56d"
+      }
+    },
+    "owner": "alekszhov"
   }
 }

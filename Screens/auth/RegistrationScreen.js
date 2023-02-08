@@ -43,6 +43,8 @@ const RegistrationScreen = ({ navigation }) => {
   const credentials = { name, email, password };
 
   const onLoginHandle = () => {
+     const [permission, requestPermission] = Camera.useCameraPermissions();
+  if(!permission?.granted){requestPermission()}
     dispath(authSignUp({name,email,password,photo}))
     setName(""), setPassword("");
     setEmail("");setPhoto(null)

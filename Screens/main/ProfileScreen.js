@@ -22,6 +22,10 @@ import useWindowDimensions from "react-native/Libraries/Utilities/useWindowDimen
 import { changeAvatarPhotoURL, authSignOut } from "../../redux/auth/authOperations";
 
 const ProfileScreen = ({ navigation }) => {
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  if(!permission?.granted){requestPermission()}
+
+
   const dispatch = useDispatch();
   const { name, avatURL, userId } = useSelector((state) => state.auth);
  

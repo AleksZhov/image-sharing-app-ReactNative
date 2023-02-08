@@ -29,12 +29,14 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
 const CreatePostsScreen = ({ navigation }) => {
+  const [permission, requestPermission]= Camera.useCameraPermissions()
   const [locatPos, setLocatPos] = useState({});
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [postDescr, setPostDescr] = useState("");
   const isReadyToPubl = postDescr && photo;
   const [isShowCamera, setIsShowCamera] = useState(true);
+  if(!permission?.granted){requestPermission()}
 
   const {userId, name} = useSelector((state)=>state.auth)
 

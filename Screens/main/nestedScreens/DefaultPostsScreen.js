@@ -62,15 +62,17 @@ const DefaultPostsScreen = ({ navigation, route }) => {
             marginBottom: 11,
           }}
         >
-          <View onPress={() => navigation.navigate("Comments", { imgUri: item.downloadURl, postId: item.docId })}
+          <View 
             style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Comments", { imgUri: item.downloadURl, postId: item.docId })}
+              style={{ flexDirection: "row", alignItems: "center" }}>
             <Feather 
               name="message-circle"
               size={18}
               color="rgba(189, 189, 189, 1)"
             />
-              <Text style={st.commNumber}>{item.comments?.length || 0}</Text></View>
+              <Text style={st.commNumber}>{item.comments?.length || 0}</Text></TouchableOpacity>
             <View style={{ marginLeft: 15 }}>
               {item.likes?.some(value => value === userId) || false ? <Ionicons
                 onPress={()=> removeLike(item.docId)}

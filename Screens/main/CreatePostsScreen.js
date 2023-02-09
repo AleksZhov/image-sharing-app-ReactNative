@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import {
@@ -28,27 +28,40 @@ import { uploadPhoto } from "../../firebase/storageUse";
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from "../../firebase/config";
 
-const CreatePostsScreen = ({ navigation }) => {
-  const [permission, requestPermission]= Camera.useCameraPermissions()
+const CreatePostsScreen =  async ({ navigation }) => {
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+   
+  const [errorMsg, setErrorMsg] = useState(null);
   const [locatPos, setLocatPos] = useState({});
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [postDescr, setPostDescr] = useState("");
   const isReadyToPubl = postDescr && photo;
   const [isShowCamera, setIsShowCamera] = useState(true);
+  const { userId, name } = useSelector((state) => state.auth)
+
   if(!permission?.granted){requestPermission()}
 
-  const {userId, name} = useSelector((state)=>state.auth)
+  
+  
+
+  // useEffect(() => {
+  //   (async () => {
+      
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       setErrorMsg('Permission to access location was denied');
+  //       return;
+  //     }
+
+     
+  //   })();
+  // }, []);
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    
     setPhoto(photo.uri);
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
+   
     let { coords } = await Location.getCurrentPositionAsync();
     let place = await Location.reverseGeocodeAsync({
       latitude: coords.latitude,

@@ -28,7 +28,7 @@ import { uploadPhoto } from "../../firebase/storageUse";
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from "../../firebase/config";
 
-const CreatePostsScreen =  async ({ navigation }) => {
+const CreatePostsScreen =   ({ navigation }) => {
   const [permission, requestPermission] = Camera.useCameraPermissions();
    
   const [errorMsg, setErrorMsg] = useState(null);
@@ -45,29 +45,28 @@ const CreatePostsScreen =  async ({ navigation }) => {
   
   
 
-  // useEffect(() => {
-  //   (async () => {
-      
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       setErrorMsg('Permission to access location was denied');
-  //       return;
-  //     }
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
 
-     
-  //   })();
-  // }, []);
+    })();
+  }, []);
+ 
+ 
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
-   
     let { coords } = await Location.getCurrentPositionAsync();
     let place = await Location.reverseGeocodeAsync({
       latitude: coords.latitude,
       longitude: coords.longitude,
     });
-    let pos = `${place[0].region}, ${place[0].country}`;
+   
     let positionData = {
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -75,6 +74,7 @@ const CreatePostsScreen =  async ({ navigation }) => {
       country: place[0].country,
     };
     setLocatPos(positionData);
+    setIsShowCamera(true)
   };
 
   const onPublishHandle = async() => {
@@ -116,7 +116,7 @@ const CreatePostsScreen =  async ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 takePhoto();
-                setIsShowCamera(true);
+              
               }}
               style={st.btnCont}
             >

@@ -5,8 +5,10 @@ import {  Feather, AntDesign } from "@expo/vector-icons";
 import AddBtn from "../../components/AddButton";
 
 import CreatePostsScreen from "./CreatePostsScreen";
+import CreatePost from "./CreatePostComponents/CreatePost";
+
 import PostsScreen from "./PostsScreen";
-import ProfileScreen from "./ProfileScreen";
+import ProfileScreen from "./ProfileScreen"
 
 const MainTab = createBottomTabNavigator();
 

@@ -7,11 +7,12 @@ import { uploadPhoto } from "../../firebase/storageUse";
 const {updateUserProfile, authLogOut,authSetChange, changeAvatarPhoto} = authSlice.actions
 
 
-export const authSignUp = ({ email, password, name, photo }) => async (dispatch, getState) => { 
+export const authSignUp = ({name, email, password,  photo }) => async (dispatch, getState) => { 
     
      try {
          const { user } = await createUserWithEmailAndPassword(auth, email, password);
-         const avatarURL = await uploadPhoto(photo,user.uid)
+         const avatarURL = await uploadPhoto(photo, user.uid);
+         console.log('avatarURL: ', avatarURL);
         
          await updateProfile(user,{ displayName: name, photoURL:avatarURL });
          const {uid, displayName, photoURL} = await auth.currentUser;

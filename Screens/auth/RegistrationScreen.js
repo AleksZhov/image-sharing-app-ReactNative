@@ -12,7 +12,7 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import  { useState, useEffect } from "react";
 import { AntDesign, MaterialIcons } from '@expo/vector-icons'; 
 import { Camera } from "expo-camera";
 import { useDispatch } from "react-redux";
@@ -20,6 +20,8 @@ import {authSignUp} from "../../redux/auth/authOperations"
 
 const RegistrationScreen = ({ navigation }) => {
   const dispath = useDispatch();
+
+   const [permission, requestPermission] = Camera.useCameraPermissions();
 
   const { width } = useWindowDimensions();
   const [isReady, setIsReady] = useState(false);
@@ -33,18 +35,18 @@ const RegistrationScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [isShowCamera, setIsShowCamera] = useState(false);
+  
+    if(!permission?.granted){requestPermission()}
+
+  
+  
 
   const takeAvatarPhoto = async () => {
     const photoShot = await camera.takePictureAsync();
     setPhoto(photoShot.uri); 
   }
 
-
-  const credentials = { name, email, password };
-
   const onLoginHandle = () => {
-     const [permission, requestPermission] = Camera.useCameraPermissions();
-  if(!permission?.granted){requestPermission()}
     dispath(authSignUp({name,email,password,photo}))
     setName(""), setPassword("");
     setEmail("");setPhoto(null)

@@ -68,7 +68,6 @@ export const changeAvatarPhotoURL =(photoDir) => async (dispatch, getState) => {
         const avURL = photoDir? await uploadPhoto(photoDir, user.uid):null
     await updateProfile(user, { photoURL: avURL });
        await dispatch(changeAvatarPhoto({ avatURL: avURL }))
-       console.log(auth.currentUser)
    } catch (error) {
        console.log(error);
     

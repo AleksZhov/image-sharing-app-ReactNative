@@ -104,11 +104,12 @@ const ProfileScreen = ({ navigation }) => {
   >
     <View style={st.profileCont}>
       <View style={st.avatCont}>
-         {isShowCamera&& <Camera style={st.camera} ref={setCamera}>
+        {isShowCamera && <Camera style={st.camera} ref={setCamera}
+        type={Camera.Constants.Type.front}>
             <TouchableOpacity
-              onPress={() => {
-                takeAvatarPhoto();
-                setIsShowCamera(false);
+              onPress={async() => {
+                 await takeAvatarPhoto();
+                await setIsShowCamera(false);
               }}
               
             >

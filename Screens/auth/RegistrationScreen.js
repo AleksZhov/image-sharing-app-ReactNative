@@ -38,12 +38,11 @@ const RegistrationScreen = ({ navigation }) => {
   
     if(!permission?.granted){requestPermission()}
 
-  
-  
-
   const takeAvatarPhoto = async () => {
     const photoShot = await camera.takePictureAsync();
+    
     setPhoto(photoShot.uri); 
+    
   }
 
   const onLoginHandle = () => {
@@ -68,11 +67,12 @@ const RegistrationScreen = ({ navigation }) => {
                 marginHorizontal: (width - 152) / 2,
               }}
             >
-              {isShowCamera? <Camera style={styles.camera} ref={setCamera}>
+              {isShowCamera ? <Camera style={styles.camera} ref={setCamera}
+              type={Camera.Constants.Type.front}>
             <TouchableOpacity
-              onPress={() => {
-                takeAvatarPhoto();
-                setIsShowCamera(false);
+              onPress={async() => {
+                 await takeAvatarPhoto();
+                 await setIsShowCamera(false);
               }}
               style={styles.btnCont}
             >

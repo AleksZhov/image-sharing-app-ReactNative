@@ -2,15 +2,17 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+require("dotenv").config();
+const { API_KEY, AUTH_DOMAIN,PROJECT_ID,STORAGE_BUCKET,MESSAGING_SENDER_ID, APP_ID,MEASUREMENT_ID } = process.env;
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBdOt-NTYOsMrRmAKHLmRQ009CijZb9Hsk",
-  authDomain: "reactnative-project-7c3f4.firebaseapp.com",
-  projectId: "reactnative-project-7c3f4",
-  storageBucket: "reactnative-project-7c3f4.appspot.com",
-  messagingSenderId: "789369988733",
-  appId: "1:789369988733:web:0a516a44e902e78ad8f314",
-  measurementId: "G-8285ZLNQTX"
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID ,
+  appId: APP_ID,
+  measurementId: MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
